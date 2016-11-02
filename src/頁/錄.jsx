@@ -1,16 +1,23 @@
 import React from 'react';
 import Debug from 'debug';
 var debug = Debug('itaigi:App');
+            var index = 1;      
+            var mediaConstraints = {
+                audio: true
+            };
+            var mediaRecorder;
 
 export default class App extends React.Component {
+    startA(a,b){
+        console.log('@@')
+        debug('hi')
+        debug("",a,b)
+    }
   aa(){
 
             function captureUserMedia(mediaConstraints, successCallback, errorCallback) {
                 navigator.mediaDevices.getUserMedia(mediaConstraints).then(successCallback).catch(errorCallback);
             }
-            var mediaConstraints = {
-                audio: true
-            };
             document.querySelector('#start-recording').onclick = function() {
                 this.disabled = true;
                 captureUserMedia(mediaConstraints, onMediaSuccess, onMediaError);
@@ -37,7 +44,6 @@ export default class App extends React.Component {
                 mediaRecorder.save();
                 // alert('Drop WebM file on Chrome or Firefox. Both can play entire file. VLC player or other players may not work.');
             };
-            var mediaRecorder;
             function onMediaSuccess(stream) {
                 var audio = document.createElement('audio');
                 audio = mergeProps(audio, {
@@ -46,6 +52,7 @@ export default class App extends React.Component {
                     src: URL.createObjectURL(stream)
                 });
                 audio.play();
+            let audiosContainer = document.getElementById('audios-container');
                 audiosContainer.appendChild(audio);
                 audiosContainer.appendChild(document.createElement('hr'));
                 mediaRecorder = new MediaStreamRecorder(stream);
@@ -70,6 +77,8 @@ export default class App extends React.Component {
                     a.target = '_blank';
                     a.innerHTML = 'Open Recorded Audio No. ' + (index++) + ' (Size: ' + bytesToSize(blob.size) + ') Time Length: ' + getTimeLength(timeInterval);
                     a.href = URL.createObjectURL(blob);
+
+            let audiosContainer = document.getElementById('audios-container');
                     audiosContainer.appendChild(a);
                     audiosContainer.appendChild(document.createElement('hr'));
                 };
@@ -85,8 +94,6 @@ export default class App extends React.Component {
             function onMediaError(e) {
                 console.error('media error', e);
             }
-            var audiosContainer = document.getElementById('audios-container');
-            var index = 1;
             // below function via: http://goo.gl/B3ae8c
             function bytesToSize(bytes) {
                 var k = 1000;
@@ -115,7 +122,7 @@ export default class App extends React.Component {
 
         <section className="experiment">
             <label for="time-interval">Time Interval (milliseconds):</label>
-            <input type="text" id="time-interval" value="5000"/>ms
+            <input type="text" id="time-interval" defaultValue="5000"/>ms
 
             <br/>
             <br/> recorderType:
@@ -125,13 +132,13 @@ export default class App extends React.Component {
             </select>
             <br/>
 
-            <input id="left-channel" type="checkbox" checked />
+            <input id="left-channel" type="checkbox" defaultChecked="true" />
             <label for="left-channel">Record Mono Audio if WebAudio API is selected (above)</label>
 
             <br/>
             <br/>
 
-            <button id="start-recording">Start</button>
+            <button id="start-recording" onClick={this.startA.bind(this)}>Starat</button>
             <button id="stop-recording" disabled>Stop</button>
 
             <button id="pause-recording" disabled>Pause</button>
