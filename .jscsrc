@@ -1,0 +1,9 @@
+{
+  "preset": "airbnb",
+  "fileExtensions": [
+    ".js",
+    ".jsx"
+  ],
+  "excludeFiles": ["src/GuanKiann/LokIm/**.js", "src/GuanKiann/HuatIm/SoundsMapping.jsx", "html-template/**.js"],
+  "requireCamelCaseOrUpperCaseIdentifiers": false
+}
