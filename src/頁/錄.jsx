@@ -122,7 +122,7 @@ export default class App extends React.Component {
 );
 
     return (
-    <div className='app background'>
+    <div className='app container'>
       <article>
 
         <section className="experiment">
