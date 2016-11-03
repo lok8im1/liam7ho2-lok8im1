@@ -42,7 +42,7 @@ export default class App extends React.Component {
   onMediaSuccess(stream) {
     mediaRecorder = new MediaStreamRecorder(stream);
     mediaRecorder.stream = stream;
-    mediaRecorder.recorderType = StereoAudioRecorder;
+    mediaRecorder.recorderType = MediaStreamRecorder.StereoAudioRecorder;
     mediaRecorder.mimeType = 'audio/wav';
     // mediaRecorder.mimeType = 'audio/webm'; // audio/ogg or audio/wav or audio/webm
     let channels=2;
