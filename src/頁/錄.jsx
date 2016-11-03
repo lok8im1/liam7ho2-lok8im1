@@ -62,7 +62,7 @@ export default class App extends React.Component {
     mediaRecorder.mimeType = 'audio/wav';
     // mediaRecorder.mimeType = 'audio/webm'; // audio/ogg or audio/wav or audio/webm
     // mediaRecorder.audioChannels = !!document.getElementById('left-channel').checked ? 1 : 2;
-    mediaRecorder.ondataavailable = function (blob) {
+    mediaRecorder.ondataavailable = (function (blob) {
         var a = document.createElement('a');
         a.target = '_blank';
         a.innerHTML = 'Open Recorded Audio No. ' + (index++) + ' (Size: ' + bytesToSize(blob.size) + ') Time Length: ' + getTimeLength(timeInterval);
@@ -71,7 +71,8 @@ export default class App extends React.Component {
         let audiosContainer = document.getElementById('audios-container');
         audiosContainer.appendChild(a);
         audiosContainer.appendChild(document.createElement('hr'));
-      };
+        this.stopA();
+      }).bind(this);
     var timeInterval = document.querySelector('#time-interval').value;
     if (timeInterval) timeInterval = parseInt(timeInterval);
     else timeInterval = 5 * 1000;
@@ -79,7 +80,6 @@ export default class App extends React.Component {
     mediaRecorder.start(timeInterval);
     this.setState({ stop: false });
     this.setState({ pause: false });
-    this.setState({ save: false });
   }
 
   startA() {
@@ -89,6 +89,7 @@ export default class App extends React.Component {
       audio: true,
     };
     this.captureUserMedia(mediaConstraints, this.onMediaSuccess.bind(this), this.onMediaError.bind(this));
+    this.setState({ save: true });
   }
 
   stopA(a, b) {
@@ -101,6 +102,7 @@ export default class App extends React.Component {
     this.setState({ pause: true });
     this.setState({ resume: true });
     this.setState({ start: false });
+    this.setState({ save: false });
     console.log('@X@');
   }
 
@@ -120,7 +122,7 @@ export default class App extends React.Component {
 
   saveA() {
     debug('@@');
-    this.setState({ save: true });
+    // this.setState({ save: true });
     mediaRecorder.save();
     // alert('Drop WebM file on Chrome or Firefox. Both can play entire file.
     //  VLC player or other players may not work.');
