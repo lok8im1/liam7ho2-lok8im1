@@ -47,7 +47,7 @@ export default class App extends React.Component {
       let {index}=this.state;
         var a = document.createElement('a');
         a.target = '_blank';
-        a.innerHTML = 'No. ' + (index) + ' (大小： ' + bytesToSize(blob.size*2) + ') 時間長度： ' + (blob.size/44100/2/channels).toFixed(2)+' 秒';
+        a.innerHTML = 'No. ' + (index) + ' (大小： ' + bytesToSize(blob.size) + ') 時間長度： ' + (blob.size/44100/2/channels).toFixed(2)+' 秒';
         a.href = URL.createObjectURL(blob);
         this.setState({index:index+1})
 
@@ -58,7 +58,7 @@ export default class App extends React.Component {
       }).bind(this);
     var timeInterval = document.querySelector('#time-interval').value;
     if (timeInterval) timeInterval = parseInt(timeInterval)*1000;
-    else timeInterval = 5 * 1000;
+    else timeInterval = 60 * 1000;
     // get blob after specific time interval
     mediaRecorder.start(timeInterval);
     this.setState({ stop: false });
@@ -111,6 +111,8 @@ export default class App extends React.Component {
   }
 
   render() {
+    let 揤="ui compact blue labeled icon button";
+    let 袂使="ui compact labeled icon button disabled";
     return (
     <div className='app background'>
       <article>
@@ -126,18 +128,29 @@ export default class App extends React.Component {
             <br/>
             <br/>
 
-            <button id="start-recording"
-              onClick={this.startA.bind(this)} disabled={this.state.start}>開始</button>
-            <button id="stop-recording"
-            onClick={this.stopA.bind(this)}  disabled={this.state.stop}>停止</button>
+            <button id="start-recording" className={this.state.start ? 袂使 : 揤}
+                onClick={this.startA.bind(this)} disabled={this.state.start}>
+              <i className="play icon"/>開始
+            </button>
+            <button id="stop-recording" className={this.state.stop ? 袂使 : 揤}
+              onClick={this.stopA.bind(this)}  disabled={this.state.stop}>
+             <i className="stop icon"/> 停止
+            </button>
 
-            <button id="pause-recording"
-            onClick={this.pauseA.bind(this)} disabled={this.state.pause}>暫停</button>
-            <button id="resume-recording"
-             onClick={this.resumeA.bind(this)} disabled={this.state.resume}>繼續</button>
+            <button id="pause-recording" className={this.state.pause ? 袂使 : 揤}
+              onClick={this.pauseA.bind(this)} disabled={this.state.pause}>
+              <i className="pause icon"/>暫停
+            </button>
+            <button id="resume-recording" className={this.state.resume ? 袂使 : 揤}
+              onClick={this.resumeA.bind(this)} disabled={this.state.resume}>
+              <i className="play icon"/>繼續
+            </button>
 
-            <button id="save-recording"
-             onClick={this.saveA.bind(this)} disabled={this.state.save}>存檔</button>
+            <button id="save-recording" className={this.state.save ? 袂使 : 揤}
+             onClick={this.saveA.bind(this)} disabled={this.state.save} >
+              <i className="download icon"></i>存檔
+            </button>
+
         </section>
 
         <section className="experiment">
