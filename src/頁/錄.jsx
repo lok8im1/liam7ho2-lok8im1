@@ -99,6 +99,7 @@ export default class App extends React.Component {
     mediaRecorder.stream.stop();
     debug('@X@');
     this.setState({ pause: true });
+    this.setState({ resume: true });
     this.setState({ start: false });
     console.log('@X@');
   }
@@ -128,13 +129,13 @@ export default class App extends React.Component {
   render() {
     return (
     <div className='app background'>
-    XX    <article>
+      <article>
 
         <div className="github-stargazers"></div>
 
         <section className="experiment">
             <label htmlFor="time-interval">Time Interval (milliseconds):</label>
-            <input type="text" id="time-interval" defaultValue="10000"/>ms
+            <input type="text" id="time-interval" defaultValue="60000"/>ms
 
             <br/>
             <br/> recorderType:WebAudio API (WAV)
