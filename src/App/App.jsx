@@ -15,7 +15,7 @@ export default class App extends React.Component {
   render() {
     return (
     <div className='app background'>
-      <h1 className='ui  blue header'>臺語語音辨識</h1>
+      <h1 className='ui  blue header'>臺語線上錄音</h1>
         { React.cloneElement(
           this.props.children,
           {
@@ -31,4 +31,3 @@ App.propTypes = {
   history: React.PropTypes.object,
   children: React.PropTypes.object,
 };
-

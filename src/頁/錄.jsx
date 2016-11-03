@@ -6,31 +6,21 @@ var MediaStreamRecorder = require('msr');
 
 var mediaRecorder;
 
-// below function via: http://goo.gl/B3ae8c
-function bytesToSize(bytes) {
-  var k = 1000;
-  var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-  if (bytes === 0) return '0 Bytes';
-  var i = parseInt(Math.floor(Math.log(bytes) / Math.log(k)), 10);
-  return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
-}
-
-window.onbeforeunload = function () {
-    document.querySelector('#start-recording').disabled = false;
-  };
-
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      index:1,
+      channels: 2,
+      index: 1,
       start: false,
       stop: true,
       pause: true,
       resume: true,
       save: true,
+      音檔: [],
     };
   }
+
   onMediaError(e) {
     console.error('media error', e);
   }
@@ -39,27 +29,21 @@ export default class App extends React.Component {
     mediaRecorder = new MediaStreamRecorder(stream);
     mediaRecorder.stream = stream;
     mediaRecorder.recorderType = MediaStreamRecorder.StereoAudioRecorder;
-    mediaRecorder.mimeType = 'audio/wav';
+
     // mediaRecorder.mimeType = 'audio/webm'; // audio/ogg or audio/wav or audio/webm
-    let channels=2;
+    mediaRecorder.mimeType = 'audio/wav';
+    let { channels } = this.state;
     mediaRecorder.audioChannels = channels;
     mediaRecorder.ondataavailable = (function (blob) {
-      let {index}=this.state;
-        var a = document.createElement('a');
-        a.target = '_blank';
-        a.innerHTML = 'No. ' + (index) + ' (大小： ' + bytesToSize(blob.size) + ') 時間長度： ' + (blob.size/44100/2/channels).toFixed(2)+' 秒';
-        a.href = URL.createObjectURL(blob);
-        this.setState({index:index+1})
-
-        let audiosContainer = document.getElementById('audios-container');
-        audiosContainer.appendChild(a);
-        audiosContainer.appendChild(document.createElement('hr'));
+        let { 音檔 } = this.state;
+        this.setState({ 音檔: [...音檔, blob] });
         this.stopA();
       }).bind(this);
-    var timeInterval = document.querySelector('#time-interval').value;
-    if (timeInterval) timeInterval = parseInt(timeInterval)*1000;
-    else timeInterval = 60 * 1000;
+
     // get blob after specific time interval
+    let timeInterval = document.querySelector('#time-interval').value;
+    if (timeInterval) timeInterval = parseInt(timeInterval) * 1000;
+    else timeInterval = 60 * 1000;
     mediaRecorder.start(timeInterval);
     this.setState({ stop: false });
     this.setState({ pause: false });
@@ -71,7 +55,11 @@ export default class App extends React.Component {
     let mediaConstraints = {
       audio: true,
     };
-    navigator.getUserMedia(mediaConstraints, this.onMediaSuccess.bind(this), this.onMediaError.bind(this));
+    navigator.getUserMedia(
+      mediaConstraints,
+       this.onMediaSuccess.bind(this),
+       this.onMediaError.bind(this)
+       );
     this.setState({ save: true });
   }
 
@@ -104,15 +92,35 @@ export default class App extends React.Component {
 
   saveA() {
     debug('@@');
-    // this.setState({ save: true });
     mediaRecorder.save();
+
     // alert('Drop WebM file on Chrome or Firefox. Both can play entire file.
     //  VLC player or other players may not work.');
   }
 
+  // below function via: http://goo.gl/B3ae8c
+  bytesToSize(bytes) {
+    var k = 1000;
+    var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    if (bytes === 0) return '0 Bytes';
+    var i = parseInt(Math.floor(Math.log(bytes) / Math.log(k)), 10);
+    return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+  }
+
   render() {
-    let 揤="ui compact blue labeled icon button";
-    let 袂使="ui compact labeled icon button disabled";
+    let 揤 = 'ui compact blue labeled icon button';
+    let 袂使 = 'ui compact labeled icon button disabled';
+    let bl = this.state.音檔.map((blob, i)=>(
+      <div  key={i} >
+              <a target='_blank' href={URL.createObjectURL(blob)} >
+        {'No. ' + (i + 1) + ' (大小： ' + this.bytesToSize(blob.size) +
+        ') 時間長度： ' + (blob.size / 44100 / 2 / this.state.channels).toFixed(2) + ' 秒'}
+        </a>
+        <hr/>
+        </div>
+        )
+);
+
     return (
     <div className='app background'>
       <article>
@@ -154,7 +162,8 @@ export default class App extends React.Component {
         </section>
 
         <section className="experiment">
-            <div id="audios-container"></div>
+            <hr/>
+            {bl}
         </section>
 </article>
     </div>
