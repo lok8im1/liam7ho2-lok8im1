@@ -4,7 +4,6 @@ var debug = Debug('itaigi:App');
 
 var MediaStreamRecorder = require('msr');
 
-var index = 1;
 var mediaRecorder;
 
 // below function via: http://goo.gl/B3ae8c
@@ -17,8 +16,7 @@ function bytesToSize(bytes) {
 }
 // below function via: http://goo.gl/6QNDcI
 function getTimeLength(milliseconds) {
-  var data = new Date(milliseconds);
-  return data.getUTCHours() + ' hours, ' + data.getUTCMinutes() + ' minutes and ' + data.getUTCSeconds() + ' second(s)';
+  return milliseconds/1000 + ' second(s)';
 }
 
 window.onbeforeunload = function () {
@@ -29,6 +27,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      index:1,
       start: false,
       stop: true,
       pause: true,
@@ -36,37 +35,25 @@ export default class App extends React.Component {
       save: true,
     };
   }
-
-  captureUserMedia(mediaConstraints, successCallback, errorCallback) {
-    navigator.mediaDevices.getUserMedia(mediaConstraints).then(successCallback).catch(errorCallback);
-  }
-
   onMediaError(e) {
     console.error('media error', e);
   }
 
   onMediaSuccess(stream) {
-    let audio = document.createElement('audio');
-    audio = mergeProps(audio, {
-        controls: true,
-        muted: true,
-        src: URL.createObjectURL(stream),
-      });
-    audio.play();
-    let audiosContainer = document.getElementById('audios-container');
-    audiosContainer.appendChild(audio);
-    audiosContainer.appendChild(document.createElement('hr'));
     mediaRecorder = new MediaStreamRecorder(stream);
     mediaRecorder.stream = stream;
     mediaRecorder.recorderType = StereoAudioRecorder;
     mediaRecorder.mimeType = 'audio/wav';
     // mediaRecorder.mimeType = 'audio/webm'; // audio/ogg or audio/wav or audio/webm
-    // mediaRecorder.audioChannels = !!document.getElementById('left-channel').checked ? 1 : 2;
+    let channels=2;
+    mediaRecorder.audioChannels = channels;
     mediaRecorder.ondataavailable = (function (blob) {
+      let {index}=this.state;
         var a = document.createElement('a');
         a.target = '_blank';
-        a.innerHTML = 'Open Recorded Audio No. ' + (index++) + ' (Size: ' + bytesToSize(blob.size) + ') Time Length: ' + getTimeLength(timeInterval);
+        a.innerHTML = 'No. ' + (index) + ' (大小： ' + bytesToSize(blob.size*2) + ') 時間長度： ' + (blob.size/44100/2/channels).toFixed(2)+' 秒';
         a.href = URL.createObjectURL(blob);
+        this.setState({index:index+1})
 
         let audiosContainer = document.getElementById('audios-container');
         audiosContainer.appendChild(a);
@@ -74,7 +61,7 @@ export default class App extends React.Component {
         this.stopA();
       }).bind(this);
     var timeInterval = document.querySelector('#time-interval').value;
-    if (timeInterval) timeInterval = parseInt(timeInterval);
+    if (timeInterval) timeInterval = parseInt(timeInterval)*1000;
     else timeInterval = 5 * 1000;
     // get blob after specific time interval
     mediaRecorder.start(timeInterval);
@@ -88,7 +75,7 @@ export default class App extends React.Component {
     let mediaConstraints = {
       audio: true,
     };
-    this.captureUserMedia(mediaConstraints, this.onMediaSuccess.bind(this), this.onMediaError.bind(this));
+    navigator.getUserMedia(mediaConstraints, this.onMediaSuccess.bind(this), this.onMediaError.bind(this));
     this.setState({ save: true });
   }
 
@@ -133,46 +120,34 @@ export default class App extends React.Component {
     <div className='app background'>
       <article>
 
-        <div className="github-stargazers"></div>
-
         <section className="experiment">
-            <label htmlFor="time-interval">Time Interval (milliseconds):</label>
-            <input type="text" id="time-interval" defaultValue="60000"/>ms
+            <label htmlFor="time-interval">錄音最長秒數：</label>
+            <input type="text" id="time-interval" defaultValue="60"/>
 
             <br/>
-            <br/> recorderType:WebAudio API (WAV)
+            <br/> 錄音格式：44100Hz 雙聲道 WAV
 
-            <br/>
-
-            <input id="left-channel" type="checkbox" defaultChecked="true" />
-            <label htmlFor="left-channel">Record Mono Audio</label>
 
             <br/>
             <br/>
 
             <button id="start-recording"
-              onClick={this.startA.bind(this)} disabled={this.state.start}>Start</button>
+              onClick={this.startA.bind(this)} disabled={this.state.start}>開始</button>
             <button id="stop-recording"
-            onClick={this.stopA.bind(this)}  disabled={this.state.stop}>Stop</button>
+            onClick={this.stopA.bind(this)}  disabled={this.state.stop}>停止</button>
 
             <button id="pause-recording"
-            onClick={this.pauseA.bind(this)} disabled={this.state.pause}>Pause</button>
+            onClick={this.pauseA.bind(this)} disabled={this.state.pause}>暫停</button>
             <button id="resume-recording"
-             onClick={this.resumeA.bind(this)} disabled={this.state.resume}>Resume</button>
+             onClick={this.resumeA.bind(this)} disabled={this.state.resume}>繼續</button>
 
             <button id="save-recording"
-             onClick={this.saveA.bind(this)} disabled={this.state.save}>Save</button>
+             onClick={this.saveA.bind(this)} disabled={this.state.save}>存檔</button>
         </section>
 
         <section className="experiment">
             <div id="audios-container"></div>
         </section>
-
-        <script>
-        </script>
-
-
-        <script src="https://cdn.webrtc-experiment.com/commits.js" async></script>
 </article>
     </div>
     );
