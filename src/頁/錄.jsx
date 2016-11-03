@@ -14,10 +14,6 @@ function bytesToSize(bytes) {
   var i = parseInt(Math.floor(Math.log(bytes) / Math.log(k)), 10);
   return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
 }
-// below function via: http://goo.gl/6QNDcI
-function getTimeLength(milliseconds) {
-  return milliseconds/1000 + ' second(s)';
-}
 
 window.onbeforeunload = function () {
     document.querySelector('#start-recording').disabled = false;
@@ -80,22 +76,20 @@ export default class App extends React.Component {
   }
 
   stopA(a, b) {
-    console.log('@X@');
-    this.setState({ stop: true });
     debug('@X@');
+    this.setState({ stop: true });
     mediaRecorder.stop();
     mediaRecorder.stream.stop();
-    debug('@X@');
     this.setState({ pause: true });
     this.setState({ resume: true });
     this.setState({ start: false });
     this.setState({ save: false });
-    console.log('@X@');
   }
 
   pauseA() {
     console.log('@@');
     this.setState({ pause: true });
+    this.setState({ stop: true });
     mediaRecorder.pause();
     this.setState({ resume: false });
   }
@@ -104,6 +98,7 @@ export default class App extends React.Component {
     console.log('@@');
     this.setState({ resume: true });
     mediaRecorder.resume();
+    this.setState({ stop: false });
     this.setState({ pause: false });
   }
 
