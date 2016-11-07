@@ -10,6 +10,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+        frequency:48000,
       channels: 2,
       index: 1,
       start: false,
@@ -32,7 +33,8 @@ export default class App extends React.Component {
 
     // mediaRecorder.mimeType = 'audio/webm'; // audio/ogg or audio/wav or audio/webm
     mediaRecorder.mimeType = 'audio/wav';
-    let { channels } = this.state;
+    let { frequency,channels } = this.state;
+    mediaRecorder.sampleRate = frequency;
     mediaRecorder.audioChannels = channels;
     mediaRecorder.ondataavailable = (function (blob) {
         let { 音檔 } = this.state;
@@ -114,7 +116,9 @@ export default class App extends React.Component {
       <div  key={i} >
               <a target='_blank' href={URL.createObjectURL(blob)} >
         {'No. ' + (i + 1) + ' (大小： ' + this.bytesToSize(blob.size) +
-        ') 時間長度： ' + (blob.size / 44100 / 2 / this.state.channels).toFixed(2) + ' 秒'}
+        ') 時間長度： ' + 
+        (blob.size / this.state.frequency / 2 / this.state.channels).toFixed(2) 
+        + ' 秒'}
         </a>
         <hr/>
         </div>
@@ -130,7 +134,7 @@ export default class App extends React.Component {
             <input type="text" id="time-interval" defaultValue="60"/>
 
             <br/>
-            <br/> 錄音格式：44100Hz 雙聲道 WAV
+            <br/> 錄音格式：{this.state.frequency}Hz 雙聲道 WAV
 
 
             <br/>

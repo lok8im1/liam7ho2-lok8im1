@@ -3,7 +3,6 @@ import 後端 from './後端';
 
 import './App.css';
 
-import Transmit from 'react-transmit';
 import { Promise } from 'bluebird';
 import { Link } from 'react-router';
 var superagent = require('superagent-promise')(require('superagent'), Promise);
