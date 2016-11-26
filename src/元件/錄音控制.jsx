@@ -1,10 +1,8 @@
 import React from 'react';
+import MediaStreamRecorder from 'msr';
+
 import Debug from 'debug';
 var debug = Debug('itaigi:錄音控制');
-
-var MediaStreamRecorder = require('msr');
-
-var mediaRecorder;
 
 export default class 錄音控制 extends React.Component {
   constructor(props) {
@@ -23,16 +21,16 @@ export default class 錄音控制 extends React.Component {
   }
 
   onMediaSuccess(stream) {
-    mediaRecorder = new MediaStreamRecorder(stream);
-    mediaRecorder.stream = stream;
-    mediaRecorder.recorderType = MediaStreamRecorder.StereoAudioRecorder;
+    this.Mediarecorder = new MediaStreamRecorder(stream);
+    this.Mediarecorder.stream = stream;
+    this.Mediarecorder.recorderType = MediaStreamRecorder.StereoAudioRecorder;
 
-    mediaRecorder.mimeType = 'audio/wav';
+    this.Mediarecorder.mimeType = 'audio/wav';
     let { channels, timeInterval, 加音檔 } = this.props;
-    mediaRecorder.audioChannels = channels;
-    mediaRecorder.ondataavailable = ((blob)=>(this.stopA(), 加音檔.bind(this)(blob)));
+    this.Mediarecorder.audioChannels = channels;
+    this.Mediarecorder.ondataavailable = ((blob)=>(this.stopA(), 加音檔.bind(this)(blob)));
 
-    mediaRecorder.start(timeInterval);
+    this.Mediarecorder.start(timeInterval);
     this.setState({ 這馬時間: 0 });
     this.setState({ stop: false });
     this.setState({ pause: false });
@@ -54,8 +52,8 @@ export default class 錄音控制 extends React.Component {
   stopA() {
     this.setState({ stop: true });
     clearInterval(this.計時);
-    mediaRecorder.stop();
-    mediaRecorder.stream.stop();
+    this.Mediarecorder.stop();
+    this.Mediarecorder.stream.stop();
     this.setState({ pause: true });
     this.setState({ resume: true });
     this.setState({ start: false });
@@ -64,13 +62,13 @@ export default class 錄音控制 extends React.Component {
   pauseA() {
     this.setState({ pause: true });
     this.setState({ stop: true });
-    mediaRecorder.pause();
+    this.Mediarecorder.pause();
     this.setState({ resume: false });
   }
 
   resumeA() {
     this.setState({ resume: true });
-    mediaRecorder.resume();
+    this.Mediarecorder.resume();
     this.setState({ stop: false });
     this.setState({ pause: false });
   }

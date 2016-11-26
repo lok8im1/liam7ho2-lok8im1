@@ -3,13 +3,9 @@ import Debug from 'debug';
 import 錄音控制 from '../元件/錄音控制';
 import 音檔表 from '../元件/音檔表';
 
-var debug = Debug('itaigi:App');
+var debug = Debug('itaigi:錄');
 
-var MediaStreamRecorder = require('msr');
-
-var mediaRecorder;
-
-export default class App extends React.Component {
+export default class 錄 extends React.Component {
   constructor(props) {
     super(props);
     let AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -23,7 +19,6 @@ export default class App extends React.Component {
   }
 
   加音檔(blob) {
-    debug(blob);
     let { 音檔 } = this.state;
     this.setState({ 音檔: [...音檔, blob] });
   }
