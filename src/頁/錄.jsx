@@ -136,11 +136,6 @@ export default class App extends React.Component {
       <article>
 
         <section className="experiment">
-            錄音格式：{frequency}Hz 雙聲道 WAV
-
-            <br/>
-            <br/>
-
             <button id="start-recording" className={this.state.start ? 袂使 : 揤}
                 onClick={this.startA.bind(this)} disabled={this.state.start}>
               <i className="play icon"/>開始
@@ -149,16 +144,9 @@ export default class App extends React.Component {
               onClick={this.stopA.bind(this)}  disabled={this.state.stop}>
              <i className="stop icon"/> 停止
             </button>
-
-            <button id="pause-recording" className={this.state.pause ? 袂使 : 揤}
-              onClick={this.pauseA.bind(this)} disabled={this.state.pause}>
-              <i className="pause icon"/>暫停
-            </button>
-            <button id="resume-recording" className={this.state.resume ? 袂使 : 揤}
-              onClick={this.resumeA.bind(this)} disabled={this.state.resume}>
-              <i className="play icon"/>繼續
-            </button>
-
+              <div className="ui tag label">
+                <i className="music icon"></i>錄音格式：{frequency}Hz 雙聲道 WAV
+              </div>
         </section>
 
         <div className="ui celled list">
