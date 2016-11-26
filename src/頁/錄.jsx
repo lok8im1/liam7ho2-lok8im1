@@ -123,16 +123,20 @@ export default class App extends React.Component {
     let 袂使 = 'ui compact labeled icon button disabled';
     let bl = 音檔.map((blob, i)=>(
       <div  key={i} className='item' >
-    <i className="large music icon"></i>
-
         <div className='content'>
-              <a target='_blank' href={URL.createObjectURL(blob)} download={i + '.wav'}>
-              {'No. ' + (i + 1) }
-              </a>
+              <div className="ui tag teal label">
+                <i className="music icon"></i>{(i + 1) }
+              </div>
               <audio
                 src={URL.createObjectURL(blob)}
                 type="audio/wav" controls>
               </audio>
+              <a target='_blank' href={URL.createObjectURL(blob)} download={(i + 1) + '.wav'}>
+                <div className="ui label">
+                  <i className="download icon"></i>
+                  下載
+                </div>
+              </a>
           </div>
         </div>
         )
