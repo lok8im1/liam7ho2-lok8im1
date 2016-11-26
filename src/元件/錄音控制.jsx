@@ -50,10 +50,10 @@ export default class 錄音控制 extends React.Component {
   }
 
   stopA() {
+    this.setState({ stop: true });
     this.Mediarecorder.stop();
     this.Mediarecorder.stream.stop();
     clearInterval(this.計時);
-    this.setState({ stop: true });
     this.setState({ pause: true });
     this.setState({ resume: true });
     this.setState({ start: false });
