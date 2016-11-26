@@ -20,6 +20,7 @@ export default class App extends React.Component {
         stop: true,
         pause: true,
         resume: true,
+        這馬時間: 0,
         音檔: [],
       };
   }
@@ -43,6 +44,7 @@ export default class App extends React.Component {
       }).bind(this);
 
     mediaRecorder.start(timeInterval);
+    this.setState({ 這馬時間: 0 });
     this.setState({ stop: false });
     this.setState({ pause: false });
   }
@@ -57,10 +59,12 @@ export default class App extends React.Component {
        this.onMediaSuccess.bind(this),
        this.onMediaError.bind(this)
        );
+    this.計時 = setInterval((tsham)=>(this.setState({ 這馬時間: this.state.這馬時間 + 1 })), 1000);
   }
 
   stopA(a, b) {
     this.setState({ stop: true });
+    clearInterval(this.計時);
     mediaRecorder.stop();
     mediaRecorder.stream.stop();
     this.setState({ pause: true });
@@ -82,9 +86,8 @@ export default class App extends React.Component {
     this.setState({ pause: false });
   }
 
-
   render() {
-    let { frequency, channels, 音檔 } = this.state;
+    let { frequency, channels, 音檔, 這馬時間 } = this.state;
     if (frequency != 44100) {
       return (
         <div className='app container'>
@@ -127,7 +130,8 @@ export default class App extends React.Component {
             </button>
             <button id="stop-recording" className={this.state.stop ? 袂使 : 揤}
               onClick={this.stopA.bind(this)}  disabled={this.state.stop}>
-             <i className="stop icon"/> 停止
+              <i className="stop icon"/> 停止
+              <div className="floating ui red label">{這馬時間}</div>
             </button>
               <div className="ui tag label">
                 <i className="music icon"></i>錄音格式：{frequency}Hz 雙聲道 WAV
