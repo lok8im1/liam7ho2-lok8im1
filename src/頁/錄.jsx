@@ -13,6 +13,7 @@ export default class App extends React.Component {
     let { sampleRate } = new AudioContext();
     this.state = {
         frequency: sampleRate, // 無法度改
+        timeInterval: 600 * 1000, // 錄音最長600秒
         channels: 2,
         index: 1,
         start: false,
@@ -35,7 +36,7 @@ export default class App extends React.Component {
 
     // mediaRecorder.mimeType = 'audio/webm'; // audio/ogg or audio/wav or audio/webm
     mediaRecorder.mimeType = 'audio/wav';
-    let { channels } = this.state;
+    let { channels, timeInterval } = this.state;
     mediaRecorder.audioChannels = channels;
     debug(mediaRecorder.sampleRate);
     mediaRecorder.ondataavailable = (function (blob) {
@@ -45,10 +46,6 @@ export default class App extends React.Component {
         this.stopA();
       }).bind(this);
 
-    // get blob after specific time interval
-    let timeInterval = document.querySelector('#time-interval').value;
-    if (timeInterval) timeInterval = parseInt(timeInterval) * 1000;
-    else timeInterval = 60 * 1000;
     mediaRecorder.start(timeInterval);
     this.setState({ stop: false });
     this.setState({ pause: false });
@@ -125,14 +122,19 @@ export default class App extends React.Component {
     let 揤 = 'ui compact blue labeled icon button';
     let 袂使 = 'ui compact labeled icon button disabled';
     let bl = 音檔.map((blob, i)=>(
-      <div  key={i} >
+      <div  key={i} className='item' >
+        <div classNmae='content'>
               <a target='_blank' href={URL.createObjectURL(blob)} >
         {'No. ' + (i + 1) + ' (大小： ' + this.bytesToSize(blob.size) +
         ') 時間長度： ' +
         (blob.size / frequency / 2 / channels).toFixed(2)
         + ' 秒'}
         </a>
-        <hr/>
+        <audio
+          src={URL.createObjectURL(blob)}
+          type="audio/wav" controls>
+        </audio>
+        </div>
         </div>
         )
 );
@@ -142,12 +144,7 @@ export default class App extends React.Component {
       <article>
 
         <section className="experiment">
-            <label htmlFor="time-interval">錄音最長秒數：</label>
-            <input type="text" id="time-interval" defaultValue="6000"/>
-
-            <br/>
-            <br/> 錄音格式：{frequency}Hz 雙聲道 WAV
-
+            錄音格式：{frequency}Hz 雙聲道 WAV
 
             <br/>
             <br/>
@@ -177,10 +174,9 @@ export default class App extends React.Component {
 
         </section>
 
-        <section className="experiment">
-            <hr/>
+        <div className="ui celled ordered list">
             {bl}
-        </section>
+        </div>
       </article>
     </div>
     );
