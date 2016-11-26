@@ -10,9 +10,10 @@ export default class 錄音控制 extends React.Component {
     this.state = {
         start: false,
         stop: true,
-        pause: true,
-        resume: true,
         這馬時間: 0,
+        編號:undefined,
+        漢字:undefined,
+        臺羅:undefined,
       };
   }
 
@@ -32,7 +33,6 @@ export default class 錄音控制 extends React.Component {
 
     this.Mediarecorder.start(timeInterval);
     this.setState({ stop: false });
-    this.setState({ pause: false });
   }
 
   startA() {
@@ -54,23 +54,7 @@ export default class 錄音控制 extends React.Component {
     this.Mediarecorder.stop();
     this.Mediarecorder.stream.stop();
     clearInterval(this.計時);
-    this.setState({ pause: true });
-    this.setState({ resume: true });
     this.setState({ start: false });
-  }
-
-  pauseA() {
-    this.setState({ pause: true });
-    this.setState({ stop: true });
-    this.Mediarecorder.pause();
-    this.setState({ resume: false });
-  }
-
-  resumeA() {
-    this.setState({ resume: true });
-    this.Mediarecorder.resume();
-    this.setState({ stop: false });
-    this.setState({ pause: false });
   }
 
   render() {
@@ -81,7 +65,7 @@ export default class 錄音控制 extends React.Component {
     return (
         <section>
             <div className="ui teal tag label">
-              <i className="music icon"></i>{第幾个} - 雙聲道 {frequency}Hz WAV
+              <i className="music icon"></i>雙聲道 {frequency}Hz WAV
             </div>
             <button id="start-recording" className={this.state.start ? 袂使 : 揤}
                 onClick={this.startA.bind(this)} disabled={this.state.start}>
