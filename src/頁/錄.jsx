@@ -15,17 +15,27 @@ export default class 錄 extends React.Component {
         timeInterval: 600 * 1000, // 錄音最長600秒
         channels: 2,
         音檔: [],
-
+        編號: undefined,
       };
+  }
+
+  調名(input) {
+    let 名 = input.value;
+    this.setState({ 名 });
+  }
+
+  掠稿() {
+    this.setState({ 編號: this.state.音檔.length });
   }
 
   加音檔(blob) {
     let { 音檔 } = this.state;
     this.setState({ 音檔: [...音檔, blob] });
+    this.掠稿();
   }
 
   render() {
-    let { frequency, timeInterval, channels, 音檔, 這馬時間,名 } = this.state;
+    let { frequency, timeInterval, channels, 名, 音檔, 編號 } = this.state;
     if (frequency != 44100) {
       return (
         <div className='app container'>
@@ -33,21 +43,23 @@ export default class 錄 extends React.Component {
         </div>
         );
     }
+
     return (
     <div className='app container'>
-        <form className="ui form">
+        <div className="ui form">
           <div className="fields">
             <div className="field">
               <label>名</label>
-              <input type='text' placeholder="名" value={名}/>
+              <input type='text' placeholder="名" value={名} onChange={this.調名.bind(this)} />
             </div>
-            <button className="ui button" type="submit">Submit</button>
+            <button className="ui button" onClick={this.掠稿.bind(this)}>載入進度</button>
           </div>
-        </form>
+        </div>
         <錄音控制 frequency={frequency} timeInterval={timeInterval} channels={channels}
           第幾个={音檔.length + 1} 加音檔={this.加音檔.bind(this)}/>
 
         <音檔表 音檔={音檔}/>
+        {編號}
     </div>
     );
   }

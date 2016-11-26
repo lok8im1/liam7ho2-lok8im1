@@ -18,7 +18,7 @@ export default class 音檔表 extends React.Component {
               <a target='_blank' href={URL.createObjectURL(blob)} download={(i + 1) + '.wav'}>
                 <div className="ui label">
                   <i className="download icon"></i>
-                  下載
+                  這个好
                 </div>
               </a>
           </div>
