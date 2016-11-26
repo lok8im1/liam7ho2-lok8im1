@@ -9,8 +9,10 @@ var mediaRecorder;
 export default class App extends React.Component {
   constructor(props) {
     super(props);
+    let AudioContext = window.AudioContext || window.webkitAudioContext;
+    let { sampleRate } = new AudioContext();
     this.state = {
-        frequency: 44100,
+        frequency: sampleRate, // 無法度改
         channels: 2,
         index: 1,
         start: false,
@@ -33,9 +35,11 @@ export default class App extends React.Component {
 
     // mediaRecorder.mimeType = 'audio/webm'; // audio/ogg or audio/wav or audio/webm
     mediaRecorder.mimeType = 'audio/wav';
-    let { frequency, channels } = this.state;
+    let { channels } = this.state;
     mediaRecorder.audioChannels = channels;
+    debug(mediaRecorder.sampleRate);
     mediaRecorder.ondataavailable = (function (blob) {
+        debug(mediaRecorder.sampleRate);
         let { 音檔 } = this.state;
         this.setState({ 音檔: [...音檔, blob] });
         this.stopA();
@@ -109,14 +113,23 @@ export default class App extends React.Component {
   }
 
   render() {
+    let { frequency, channels, 音檔 } = this.state;
+    if (frequency != 44100) {
+      return (
+        <div className='app container'>
+          你的瀏覽器不支援44100Hz的錄音。錄音頻率是：{frequency}
+        </div>
+        );
+    }
+
     let 揤 = 'ui compact blue labeled icon button';
     let 袂使 = 'ui compact labeled icon button disabled';
-    let bl = this.state.音檔.map((blob, i)=>(
+    let bl = 音檔.map((blob, i)=>(
       <div  key={i} >
               <a target='_blank' href={URL.createObjectURL(blob)} >
         {'No. ' + (i + 1) + ' (大小： ' + this.bytesToSize(blob.size) +
         ') 時間長度： ' +
-        (blob.size / this.state.frequency / 2 / this.state.channels).toFixed(2)
+        (blob.size / frequency / 2 / channels).toFixed(2)
         + ' 秒'}
         </a>
         <hr/>
@@ -133,7 +146,7 @@ export default class App extends React.Component {
             <input type="text" id="time-interval" defaultValue="6000"/>
 
             <br/>
-            <br/> 錄音格式：{this.state.frequency}Hz 雙聲道 WAV
+            <br/> 錄音格式：{frequency}Hz 雙聲道 WAV
 
 
             <br/>
@@ -168,7 +181,7 @@ export default class App extends React.Component {
             <hr/>
             {bl}
         </section>
-</article>
+      </article>
     </div>
     );
   }
