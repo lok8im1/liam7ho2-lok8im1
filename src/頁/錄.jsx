@@ -20,7 +20,6 @@ export default class App extends React.Component {
         stop: true,
         pause: true,
         resume: true,
-        save: true,
         音檔: [],
       };
   }
@@ -62,7 +61,6 @@ export default class App extends React.Component {
        this.onMediaSuccess.bind(this),
        this.onMediaError.bind(this)
        );
-    this.setState({ save: true });
   }
 
   stopA(a, b) {
@@ -73,7 +71,6 @@ export default class App extends React.Component {
     this.setState({ pause: true });
     this.setState({ resume: true });
     this.setState({ start: false });
-    this.setState({ save: false });
   }
 
   pauseA() {
@@ -90,14 +87,6 @@ export default class App extends React.Component {
     mediaRecorder.resume();
     this.setState({ stop: false });
     this.setState({ pause: false });
-  }
-
-  saveA() {
-    debug('@@');
-    mediaRecorder.save();
-
-    // alert('Drop WebM file on Chrome or Firefox. Both can play entire file.
-    //  VLC player or other players may not work.');
   }
 
   // below function via: http://goo.gl/B3ae8c
@@ -140,7 +129,7 @@ export default class App extends React.Component {
           </div>
         </div>
         )
-).reverse();
+      ).reverse();
 
     return (
     <div className='app container'>
@@ -168,11 +157,6 @@ export default class App extends React.Component {
             <button id="resume-recording" className={this.state.resume ? 袂使 : 揤}
               onClick={this.resumeA.bind(this)} disabled={this.state.resume}>
               <i className="play icon"/>繼續
-            </button>
-
-            <button id="save-recording" className={this.state.save ? 袂使 : 揤}
-             onClick={this.saveA.bind(this)} disabled={this.state.save} >
-              <i className="download icon"></i>存檔
             </button>
 
         </section>
