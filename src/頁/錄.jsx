@@ -123,21 +123,20 @@ export default class App extends React.Component {
     let 袂使 = 'ui compact labeled icon button disabled';
     let bl = 音檔.map((blob, i)=>(
       <div  key={i} className='item' >
-        <div classNmae='content'>
-              <a target='_blank' href={URL.createObjectURL(blob)} >
-        {'No. ' + (i + 1) + ' (大小： ' + this.bytesToSize(blob.size) +
-        ') 時間長度： ' +
-        (blob.size / frequency / 2 / channels).toFixed(2)
-        + ' 秒'}
-        </a>
-        <audio
-          src={URL.createObjectURL(blob)}
-          type="audio/wav" controls>
-        </audio>
-        </div>
+    <i className="large music icon"></i>
+
+        <div className='content'>
+              <a target='_blank' href={URL.createObjectURL(blob)} download={i + '.wav'}>
+              {'No. ' + (i + 1) }
+              </a>
+              <audio
+                src={URL.createObjectURL(blob)}
+                type="audio/wav" controls>
+              </audio>
+          </div>
         </div>
         )
-);
+).reverse();
 
     return (
     <div className='app container'>
@@ -174,7 +173,7 @@ export default class App extends React.Component {
 
         </section>
 
-        <div className="ui celled ordered list">
+        <div className="ui celled list">
             {bl}
         </div>
       </article>
