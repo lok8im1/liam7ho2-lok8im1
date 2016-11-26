@@ -31,7 +31,6 @@ export default class 錄音控制 extends React.Component {
     this.Mediarecorder.ondataavailable = ((blob)=>(this.stopA(), 加音檔.bind(this)(blob)));
 
     this.Mediarecorder.start(timeInterval);
-    this.setState({ 這馬時間: 0 });
     this.setState({ stop: false });
     this.setState({ pause: false });
   }
@@ -46,14 +45,15 @@ export default class 錄音控制 extends React.Component {
        this.onMediaSuccess.bind(this),
        this.onMediaError.bind(this)
        );
+    this.setState({ 這馬時間: 0 });
     this.計時 = setInterval((tsham)=>(this.setState({ 這馬時間: this.state.這馬時間 + 1 })), 1000);
   }
 
   stopA() {
-    this.setState({ stop: true });
-    clearInterval(this.計時);
     this.Mediarecorder.stop();
     this.Mediarecorder.stream.stop();
+    clearInterval(this.計時);
+    this.setState({ stop: true });
     this.setState({ pause: true });
     this.setState({ resume: true });
     this.setState({ start: false });
@@ -74,12 +74,15 @@ export default class 錄音控制 extends React.Component {
   }
 
   render() {
-    let { frequency } = this.props;
+    let { 第幾个, frequency } = this.props;
     let { 這馬時間 } = this.state;
     let 揤 = 'ui compact blue labeled icon button';
     let 袂使 = 'ui compact labeled icon button disabled';
     return (
         <section>
+            <div className="ui teal tag label">
+              <i className="music icon"></i>{第幾个} - 雙聲道 {frequency}Hz WAV
+            </div>
             <button id="start-recording" className={this.state.start ? 袂使 : 揤}
                 onClick={this.startA.bind(this)} disabled={this.state.start}>
               <i className="play icon"/>開始
@@ -89,9 +92,6 @@ export default class 錄音控制 extends React.Component {
               <i className="stop icon"/> 停止
               <div className="floating ui red label">{這馬時間}</div>
             </button>
-              <div className="ui tag label">
-                <i className="music icon"></i>錄音格式：{frequency}Hz 雙聲道 WAV
-              </div>
         </section>
       );
   }

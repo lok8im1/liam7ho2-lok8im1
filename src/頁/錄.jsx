@@ -37,7 +37,7 @@ export default class 錄 extends React.Component {
     <div className='app container'>
       <article>
         <錄音控制 frequency={frequency} timeInterval={timeInterval} channels={channels}
-          加音檔={this.加音檔.bind(this)}/>
+          第幾个={音檔.length + 1} 加音檔={this.加音檔.bind(this)}/>
 
         <音檔表 音檔={音檔}/>
       </article>
