@@ -25,7 +25,7 @@ export default class App extends React.Component {
   }
 
   onMediaError(e) {
-    console.error('media error', e);
+    debug('media error', e);
   }
 
   onMediaSuccess(stream) {
@@ -33,13 +33,10 @@ export default class App extends React.Component {
     mediaRecorder.stream = stream;
     mediaRecorder.recorderType = MediaStreamRecorder.StereoAudioRecorder;
 
-    // mediaRecorder.mimeType = 'audio/webm'; // audio/ogg or audio/wav or audio/webm
     mediaRecorder.mimeType = 'audio/wav';
     let { channels, timeInterval } = this.state;
     mediaRecorder.audioChannels = channels;
-    debug(mediaRecorder.sampleRate);
     mediaRecorder.ondataavailable = (function (blob) {
-        debug(mediaRecorder.sampleRate);
         let { 音檔 } = this.state;
         this.setState({ 音檔: [...音檔, blob] });
         this.stopA();
@@ -51,7 +48,6 @@ export default class App extends React.Component {
   }
 
   startA() {
-    console.log('@@');
     this.setState({ start: true });
     let mediaConstraints = {
       audio: true,
@@ -64,7 +60,6 @@ export default class App extends React.Component {
   }
 
   stopA(a, b) {
-    debug('@X@');
     this.setState({ stop: true });
     mediaRecorder.stop();
     mediaRecorder.stream.stop();
@@ -74,7 +69,6 @@ export default class App extends React.Component {
   }
 
   pauseA() {
-    console.log('@@');
     this.setState({ pause: true });
     this.setState({ stop: true });
     mediaRecorder.pause();
@@ -82,21 +76,12 @@ export default class App extends React.Component {
   }
 
   resumeA() {
-    console.log('@@');
     this.setState({ resume: true });
     mediaRecorder.resume();
     this.setState({ stop: false });
     this.setState({ pause: false });
   }
 
-  // below function via: http://goo.gl/B3ae8c
-  bytesToSize(bytes) {
-    var k = 1000;
-    var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-    if (bytes === 0) return '0 Bytes';
-    var i = parseInt(Math.floor(Math.log(bytes) / Math.log(k)), 10);
-    return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
-  }
 
   render() {
     let { frequency, channels, 音檔 } = this.state;
