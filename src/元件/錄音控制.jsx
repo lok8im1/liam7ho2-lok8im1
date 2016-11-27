@@ -11,9 +11,6 @@ export default class 錄音控制 extends React.Component {
         start: false,
         stop: true,
         這馬時間: 0,
-        編號: undefined,
-        漢字: undefined,
-        臺羅: undefined,
       };
   }
 
