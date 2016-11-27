@@ -15,12 +15,10 @@ export default class 音檔表 extends React.Component {
                 src={URL.createObjectURL(blob)}
                 type="audio/wav" controls>
               </audio>
-              <a onClick={送出音檔.bind(this, blob)}>
-                <div className="ui label">
-                  <i className="download icon"></i>
+              <button className="ui button" onClick={送出音檔.bind(this, blob)}>
+                  <i className="thumbs up icon"></i>
                   這个好
-                </div>
-              </a>
+              </button>
           </div>
         </div>
         )
