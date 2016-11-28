@@ -27,7 +27,8 @@ export default class 錄 extends React.Component {
 
   掠稿() {
     this.setState({ 名: this.refs.名.value });
-    superagent.get(後端.稿() + '?啥人唸的=' + encodeURI(this.state.名))
+    superagent.get(後端.稿())
+      .query({啥人唸的:this.state.名})
       .then(({ body })=>(
         this.setState({ 資料: body })
       ))
