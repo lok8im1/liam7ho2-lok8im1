@@ -1,5 +1,7 @@
 import React from 'react';
+import superagent from 'superagent-bluebird-promise';
 import Debug from 'debug';
+import 後端 from '../App/後端';
 import 顯示例句 from '../元件/顯示例句';
 
 var debug = Debug('itaigi:錄');
@@ -28,9 +30,11 @@ export default class 錄 extends React.Component {
   }
 
   掠稿() {
-    let { 資料 } = this.state;
-    資料.編號 += +1;
-    this.setState({ 資料 });
+    superagent.get(後端.稿(this.state.名))
+      .then(({ body })=>(
+        this.setState({ 資料: body })
+      ))
+      .catch((err) => (debug(err)));
   }
 
   送出音檔(blob) {
