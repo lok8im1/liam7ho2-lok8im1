@@ -22,7 +22,19 @@ export default class 錄 extends React.Component {
           臺羅: 'sui2',
         },
       };
+  }
 
+
+  掠稿() {
+    this.setState({ 名: this.refs.名.value });
+    superagent.get(後端.稿() + '?啥人唸的=' + encodeURI(this.state.名))
+      .then(({ body })=>(
+        this.setState({ 資料: body })
+      ))
+      .catch((err) => (debug(err)));
+  }
+
+  送出音檔(blob) {
     this.fileReader = new FileReader();
     this.fileReader.onload = function () {
         let encoded_blob = btoa(new Uint8Array(this.fileReader.result));
@@ -39,23 +51,6 @@ export default class 錄 extends React.Component {
           .catch((err) => (debug(err)));
       }.bind(this);
 
-  }
-
-  調名(event) {
-    let 名 = event.target.value;
-    this.setState({ 名 });
-  }
-
-  掠稿() {
-    this.setState({ 載入名: this.state.名 });
-    superagent.get(後端.稿() + '?啥人唸的=' + encodeURI(this.state.名))
-      .then(({ body })=>(
-        this.setState({ 資料: body })
-      ))
-      .catch((err) => (debug(err)));
-  }
-
-  送出音檔(blob) {
     this.fileReader.readAsArrayBuffer(blob);
   }
 
@@ -75,7 +70,7 @@ export default class 錄 extends React.Component {
           <div className="fields">
             <div className="field">
               <label>名</label>
-              <input type='text' placeholder="你的名" onChange={this.調名.bind(this)} />
+              <input ref='名' type='text' placeholder="你的名"/>
             </div>
             <button className="ui button" onClick={this.掠稿.bind(this)}>載入進度</button>
           </div>
