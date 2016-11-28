@@ -5,7 +5,7 @@ export default class 後端  {
     return 'https://db.itaigi.tw';
   }
 
-  static 稿(名) {
-    return this.網址() + '/稿/?啥人唸的=' + encodeURI(名);
+  static 稿() {
+    return this.網址() + '/稿/';
   }
 }

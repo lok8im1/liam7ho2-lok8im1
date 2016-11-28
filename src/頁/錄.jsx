@@ -22,15 +22,33 @@ export default class 錄 extends React.Component {
           臺羅: 'sui2',
         },
       };
+
+    this.fileReader = new FileReader();
+    this.fileReader.onload = function () {
+        let encoded_blob = btoa(new Uint8Array(this.fileReader.result));
+        superagent.post(後端.稿())
+          .set('Content-Type', 'application/x-www-form-urlencoded')
+          .send({
+            啥人唸的: this.state.名,
+            編號: this.state.資料.編號,
+            blob: encoded_blob,
+          })
+          .then(({ body })=>(
+            this.setState({ 資料: body })
+          ))
+          .catch((err) => (debug(err)));
+      }.bind(this);
+
   }
 
-  調名(input) {
-    let 名 = input.value;
+  調名(event) {
+    let 名 = event.target.value;
     this.setState({ 名 });
   }
 
   掠稿() {
-    superagent.get(後端.稿(this.state.名))
+    this.setState({ 載入名: this.state.名 });
+    superagent.get(後端.稿() + '?啥人唸的=' + encodeURI(this.state.名))
       .then(({ body })=>(
         this.setState({ 資料: body })
       ))
@@ -38,8 +56,7 @@ export default class 錄 extends React.Component {
   }
 
   送出音檔(blob) {
-    debug('送出音檔');
-    this.掠稿();
+    this.fileReader.readAsArrayBuffer(blob);
   }
 
   render() {
@@ -58,7 +75,7 @@ export default class 錄 extends React.Component {
           <div className="fields">
             <div className="field">
               <label>名</label>
-              <input type='text' placeholder="你的名" value={名} onChange={this.調名.bind(this)} />
+              <input type='text' placeholder="你的名" onChange={this.調名.bind(this)} />
             </div>
             <button className="ui button" onClick={this.掠稿.bind(this)}>載入進度</button>
           </div>

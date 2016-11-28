@@ -28,12 +28,12 @@ export default class 顯示例句 extends React.Component {
 
   render() {
     let { frequency, timeInterval, channels, 名, 資料, 送出音檔 } = this.props;
-    let { id, 漢字, 臺羅 } = 資料;
+    let { 編號, 漢字, 臺羅 } = 資料;
     let { 音檔 } = this.state;
 
     return (
     <div>
-      {id}<br/>
+      {編號}<br/>
       {漢字}<br/>
       {臺羅}<br/>
       <錄音控制 frequency={frequency} timeInterval={timeInterval} channels={channels}
