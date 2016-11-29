@@ -26,16 +26,26 @@ export default class 顯示例句 extends React.Component {
   }
 
   render() {
-    let { frequency, timeInterval, channels, 名, 資料, 送出音檔, 當佇送 } = this.props;
+    let { frequency, timeInterval, channels, 名, 資料, 漢字音標對齊, 送出音檔, 當佇送 } = this.props;
     if (資料 === undefined) {
       return <div/>;
     }
 
-    let { 編號, 漢字, 臺羅 } = 資料;
+    if (漢字音標對齊 === undefined) {
+      return (
+        <div className="ui segment">
+          <div className="ui active inverted dimmer">
+            <div className="ui text loader">載入中…</div>
+          </div>
+          <p></p>
+        </div>
+        );
+    }
+
     let { 音檔 } = this.state;
     return (
     <div>
-      <漢字臺羅 資料={資料}/>
+      <漢字臺羅 資料={資料} 漢字音標對齊={漢字音標對齊}/>
       <錄音控制 frequency={frequency} timeInterval={timeInterval} channels={channels}
         資料={資料} 加音檔={this.加音檔.bind(this)}/>
 

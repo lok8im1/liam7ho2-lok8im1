@@ -10,7 +10,7 @@ export default class 漢字臺羅 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      };
+    };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -19,11 +19,16 @@ export default class 漢字臺羅 extends React.Component {
 
   render() {
     let { 編號, 漢字, 臺羅 } = this.props.資料;
+    let { 分詞, 綜合標音 } = this.props.漢字音標對齊;
+
+    // 漢字, 臺羅.extend()
+    //
     return (
     <div>
       {編號}<br/>
       {漢字}<br/>
       {臺羅}<br/>
+      {分詞}<br/>
     </div>
     );
   }

@@ -29,9 +29,20 @@ export default class 錄 extends React.Component {
     superagent.get(後端.稿())
       .query({ 啥人唸的: 名 })
       .then(({ body })=>(
-        this.setState({ 資料: body })
+        this.setState({ 資料: body, 漢字音標對齊: undefined }),
+        this. 對齊(body)
       ))
       .catch((err) => (debug(err)));
+  }
+
+  對齊(body)  {
+    superagent.get('http://140.109.16.144/漢字音標對齊')
+      .query({ 查詢腔口: '閩南語', 漢字: body.漢字, 音標: body.臺羅 })
+      .then(({ body })=>(
+        this.setState({ 漢字音標對齊: body })
+      ))
+      .catch((err) => (debug(err)));
+
   }
 
   送出音檔(blob) {
@@ -47,7 +58,8 @@ export default class 錄 extends React.Component {
             blob: encoded_blob,
           })
           .then(({ body })=>(
-            this.setState({ 資料: body, 當佇送: false })
+            this.setState({ 資料: body, 當佇送: false, 漢字音標對齊: undefined }),
+            this. 對齊(body)
           ))
           .catch((err) => (
             debug(err),
@@ -60,7 +72,7 @@ export default class 錄 extends React.Component {
   }
 
   render() {
-    let { frequency, timeInterval, channels, 名, 音檔, 資料, 當佇送 } = this.state;
+    let { frequency, timeInterval, channels, 名, 音檔, 資料, 漢字音標對齊, 當佇送 } = this.state;
     if (frequency != 44100) {
       return (
         <div className='app container'>
@@ -81,7 +93,7 @@ export default class 錄 extends React.Component {
           </div>
         </div>
         <顯示例句 frequency={frequency} timeInterval={timeInterval} channels={channels}
-          資料={資料} 送出音檔={this.送出音檔.bind(this)} 當佇送={當佇送}/>
+          資料={資料} 漢字音標對齊={漢字音標對齊} 送出音檔={this.送出音檔.bind(this)} 當佇送={當佇送}/>
     </div>
     );
   }
