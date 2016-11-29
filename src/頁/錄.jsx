@@ -21,9 +21,12 @@ export default class 錄 extends React.Component {
   }
 
   掠稿() {
-    this.setState({ 名: this.refs.名.value });
+    let 名 = this.refs.名.value.trim();
+    if (名 == '')
+      return;
+    this.setState({ 名 });
     superagent.get(後端.稿())
-      .query({ 啥人唸的: this.state.名 })
+      .query({ 啥人唸的: 名 })
       .then(({ body })=>(
         this.setState({ 資料: body })
       ))
