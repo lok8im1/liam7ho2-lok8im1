@@ -17,7 +17,7 @@ export default class 顯示例句 extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps === this.props) return;
+    if (nextProps.資料 === this.props.資料) return;
     this.setState({ 音檔: [] });
   }
 
@@ -27,7 +27,7 @@ export default class 顯示例句 extends React.Component {
   }
 
   render() {
-    let { frequency, timeInterval, channels, 名, 資料, 送出音檔 } = this.props;
+    let { frequency, timeInterval, channels, 名, 資料, 送出音檔, 當佇送 } = this.props;
     if (資料 === undefined) {
       return <div/>;
     }
@@ -42,7 +42,7 @@ export default class 顯示例句 extends React.Component {
       <錄音控制 frequency={frequency} timeInterval={timeInterval} channels={channels}
         資料={資料} 加音檔={this.加音檔.bind(this)}/>
 
-      <音檔表 音檔={音檔} 送出音檔={送出音檔.bind(this)}/>
+      <音檔表 音檔={音檔} 送出音檔={送出音檔.bind(this)} 當佇送={當佇送} />
     </div>
     );
   }

@@ -16,6 +16,7 @@ export default class 錄 extends React.Component {
         timeInterval: 600 * 1000, // 錄音最長600秒
         channels: 2,
         音檔: [],
+        當佇送: false,
         資料: undefined,
       };
   }
@@ -34,7 +35,7 @@ export default class 錄 extends React.Component {
   }
 
   送出音檔(blob) {
-    //      this.setState({ 資料: undefined })
+    this.setState({ 當佇送: true });
     this.fileReader = new FileReader();
     this.fileReader.onload = function () {
         let encoded_blob = btoa(new Uint8Array(this.fileReader.result));
@@ -46,16 +47,20 @@ export default class 錄 extends React.Component {
             blob: encoded_blob,
           })
           .then(({ body })=>(
-            this.setState({ 資料: body })
+            this.setState({ 資料: body, 當佇送: false })
           ))
-          .catch((err) => (debug(err)));
+          .catch((err) => (
+            debug(err),
+            alert('上傳失敗，麻煩檢查網路或回報錯誤～'),
+            this.setState({ 當佇送: false })
+          ));
       }.bind(this);
 
     this.fileReader.readAsArrayBuffer(blob);
   }
 
   render() {
-    let { frequency, timeInterval, channels, 名, 音檔, 資料 } = this.state;
+    let { frequency, timeInterval, channels, 名, 音檔, 資料, 當佇送 } = this.state;
     if (frequency != 44100) {
       return (
         <div className='app container'>
@@ -76,7 +81,7 @@ export default class 錄 extends React.Component {
           </div>
         </div>
         <顯示例句 frequency={frequency} timeInterval={timeInterval} channels={channels}
-          資料={資料} 送出音檔={this.送出音檔.bind(this)}/>
+          資料={資料} 送出音檔={this.送出音檔.bind(this)} 當佇送={當佇送}/>
     </div>
     );
   }
