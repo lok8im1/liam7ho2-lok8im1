@@ -70,7 +70,7 @@ export default class 錄 extends React.Component {
           <div className="fields">
             <div className="field">
               <label>名</label>
-              <input ref='名' type='text' placeholder="你的名"/>
+              <input ref='名' type='text' placeholder="你叫啥名"/>
             </div>
             <button className="ui button" onClick={this.掠稿.bind(this)}>載入進度</button>
           </div>
