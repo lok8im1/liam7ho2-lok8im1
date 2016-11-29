@@ -16,19 +16,14 @@ export default class 錄 extends React.Component {
         timeInterval: 600 * 1000, // 錄音最長600秒
         channels: 2,
         音檔: [],
-        資料: {
-          編號: 1,
-          漢字: 'undefined',
-          臺羅: 'sui2',
-        },
+        資料: undefined,
       };
   }
-
 
   掠稿() {
     this.setState({ 名: this.refs.名.value });
     superagent.get(後端.稿())
-      .query({啥人唸的:this.state.名})
+      .query({ 啥人唸的: this.state.名 })
       .then(({ body })=>(
         this.setState({ 資料: body })
       ))
@@ -36,6 +31,7 @@ export default class 錄 extends React.Component {
   }
 
   送出音檔(blob) {
+    //      this.setState({ 資料: undefined })
     this.fileReader = new FileReader();
     this.fileReader.onload = function () {
         let encoded_blob = btoa(new Uint8Array(this.fileReader.result));

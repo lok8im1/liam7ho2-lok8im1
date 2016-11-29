@@ -28,9 +28,12 @@ export default class 顯示例句 extends React.Component {
 
   render() {
     let { frequency, timeInterval, channels, 名, 資料, 送出音檔 } = this.props;
+    if (資料 === undefined) {
+      return <div/>;
+    }
+
     let { 編號, 漢字, 臺羅 } = 資料;
     let { 音檔 } = this.state;
-
     return (
     <div>
       {編號}<br/>
