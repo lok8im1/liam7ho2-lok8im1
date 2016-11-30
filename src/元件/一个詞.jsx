@@ -5,6 +5,11 @@ var debug = Debug('itaigi:一个詞');
 
 export default class 一个詞 extends React.Component {
 
+  componentDidMount() {
+    let 音樂 = this.refs.音樂;
+    音樂.load();
+  }
+
   放送() {
     let 音樂 = this.refs.音樂;
     音樂.play();
