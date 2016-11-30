@@ -16,13 +16,6 @@ export default class 漢字臺羅 extends React.Component {
     if (nextProps.資料 === this.props.資料) return;
   }
 
-  ss(分詞) {
-    let 音樂 = this.refs.音樂;
-    音樂.src = encodeURI('http://voice.itaigi.tw/語音合成?查詢腔口=閩南語&查詢語句=' + 分詞);
-    音樂.load();
-    音樂.play();
-  }
-
   render() {
     let { 編號 } = this.props.資料;
     let { 分詞, 綜合標音 } = this.props.漢字音標對齊;

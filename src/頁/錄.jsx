@@ -36,7 +36,7 @@ export default class 錄 extends React.Component {
   }
 
   對齊(body)  {
-    superagent.get('http://140.109.16.144/漢字音標對齊')
+    superagent.get(後端.對齊())
       .query({ 查詢腔口: '閩南語', 漢字: body.漢字, 音標: body.臺羅 })
       .then(({ body })=>(
         this.setState({ 漢字音標對齊: body })

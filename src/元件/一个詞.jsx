@@ -1,4 +1,5 @@
 import React from 'react';
+import 後端 from '../App/後端';
 import Debug from 'debug';
 
 var debug = Debug('itaigi:一个詞');
@@ -27,9 +28,7 @@ export default class 一个詞 extends React.Component {
         
       <audio ref="音樂">
         <source type='audio/wav'
-          src={encodeURI(
-            'http://voice.itaigi.tw/語音合成?查詢腔口=閩南語&查詢語句=' + 分詞
-          )}/>
+          src={後端.音樂(分詞)}/>
       </audio>
       </span>
     );
