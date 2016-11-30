@@ -14,7 +14,7 @@ export default class 一个詞 extends React.Component {
     let { 分詞, 漢字, 臺羅 } = this.props;
 
     return (
-      <span className='ui button'>
+      <span className='ui huge button'>
       <ruby onClick={this.放送.bind(this)}>
         {漢字}
         <rt> {臺羅} </rt>
