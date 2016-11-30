@@ -20,8 +20,13 @@ export default class 漢字臺羅 extends React.Component {
   render() {
     let { 編號, 漢字, 臺羅 } = this.props.資料;
     let { 分詞, 綜合標音 } = this.props.漢字音標對齊;
-
-    // 漢字, 臺羅.extend()
+    let 分詞陣列=[],漢字陣列=[], 臺羅陣列=[]
+    綜合標音.map(function(標音){
+      分詞陣列.concat(標音.分詞.split(' '))
+      漢字陣列.concat(標音.漢字.split(' '))
+      臺羅陣列.concat(標音.臺羅.split(' '))
+    // 漢字, 臺羅.concat
+    })
     //
     return (
     <div>
