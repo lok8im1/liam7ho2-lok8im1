@@ -26,7 +26,7 @@ export default class 一个詞 extends React.Component {
         <rt> {臺羅} </rt>
       </ruby>
         
-      <audio ref="音樂">
+      <audio ref="音樂" preload>
         <source type='audio/wav'
           src={後端.音樂(分詞)}/>
       </audio>
