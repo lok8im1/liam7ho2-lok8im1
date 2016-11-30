@@ -33,12 +33,7 @@ export default class 顯示例句 extends React.Component {
 
     if (漢字音標對齊 === undefined) {
       return (
-        <div className="ui segment">
-          <div className="ui active inverted dimmer">
-            <div className="ui text loader">載入中…</div>
-          </div>
-          <p></p>
-        </div>
+          <div className="ui active inline loader"/>
         );
     }
 
