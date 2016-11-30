@@ -33,14 +33,17 @@ export default class 顯示例句 extends React.Component {
 
     if (漢字音標對齊 === undefined) {
       return (
+        <div className='ui segment'>
           <div className="ui active inline loader"/>
+        </div>
         );
     }
 
     let { 音檔 } = this.state;
     return (
-    <div>
+    <div className='ui segment'>
       <漢字臺羅 資料={資料} 漢字音標對齊={漢字音標對齊}/>
+      <br/>
       <錄音控制 frequency={frequency} timeInterval={timeInterval} channels={channels}
         資料={資料} 加音檔={this.加音檔.bind(this)}/>
 

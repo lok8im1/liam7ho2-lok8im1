@@ -14,7 +14,7 @@ export default class 一个詞 extends React.Component {
     let { 分詞, 漢字, 臺羅 } = this.props;
 
     return (
-      <span >
+      <span className='ui button'>
       <ruby onClick={this.放送.bind(this)}>
         {漢字}
         <rt> {臺羅} </rt>
@@ -26,7 +26,6 @@ export default class 一个詞 extends React.Component {
             'http://voice.itaigi.tw/語音合成?查詢腔口=閩南語&查詢語句=' + 分詞
           )}/>
       </audio>
-        
       </span>
     );
   }

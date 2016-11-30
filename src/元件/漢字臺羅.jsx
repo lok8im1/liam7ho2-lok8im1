@@ -42,7 +42,7 @@ export default class 漢字臺羅 extends React.Component {
 
     return (
       <div>
-        {編號}<br/>
+        第 {編號} 句<br/>
         {詞}<br/>
       </div>
     );
