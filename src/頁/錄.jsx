@@ -73,10 +73,10 @@ export default class 錄 extends React.Component {
 
   render() {
     let { frequency, timeInterval, channels, 名, 音檔, 資料, 漢字音標對齊, 當佇送 } = this.state;
-    if (frequency != 44100) {
+    if (frequency < 44100) {
       return (
         <div className='app container'>
-          你的瀏覽器不支援44100Hz的錄音。錄音頻率是：{frequency}
+          你的瀏覽器不支援44100Hz以上的錄音。錄音頻率是：{frequency}
         </div>
         );
     }
