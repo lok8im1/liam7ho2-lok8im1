@@ -16,6 +16,7 @@ export default class 錄音控制 extends React.Component {
 
   onMediaError(e) {
     debug('media error', e);
+    alert('提無麥克風的權限，抑是請用https來連線');
   }
 
   onMediaSuccess(stream) {
