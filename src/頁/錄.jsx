@@ -1,4 +1,5 @@
 import React from 'react';
+import cookie from 'react-cookie';
 import superagent from 'superagent-bluebird-promise';
 import Debug from 'debug';
 import 後端 from '../App/後端';
@@ -15,10 +16,15 @@ export default class 錄 extends React.Component {
         frequency: sampleRate, // 無法度改
         timeInterval: 600 * 1000, // 錄音最長600秒
         channels: 2,
+        顯示名: cookie.load('hian2si7_mia5'),
         音檔: [],
         當佇送: false,
         資料: undefined,
       };
+  }
+
+  componentDidMount() {
+    this.掠稿();
   }
 
   掠稿() {
@@ -26,6 +32,7 @@ export default class 錄 extends React.Component {
     if (名 == '')
       return;
     this.setState({ 名 });
+    cookie.save('hian2si7_mia5', 名);
     superagent.get(後端.稿())
       .query({ 啥人唸的: 名 })
       .then(({ body })=>(
@@ -71,8 +78,13 @@ export default class 錄 extends React.Component {
     this.fileReader.readAsArrayBuffer(blob);
   }
 
+  改顯示名(evt) {
+    let 顯示名 = evt.target.value;
+    this.setState({ 顯示名 });
+  }
+
   render() {
-    let { frequency, timeInterval, channels, 名, 音檔, 資料, 漢字音標對齊, 當佇送 } = this.state;
+    let { frequency, timeInterval, channels, 顯示名, 音檔, 資料, 漢字音標對齊, 當佇送 } = this.state;
     if (frequency < 44100) {
       return (
         <div className='app container'>
@@ -87,7 +99,8 @@ export default class 錄 extends React.Component {
           <div className="fields">
             <div className="field">
               <label>名</label>
-              <input ref='名' type='text' placeholder="你叫啥名"/>
+              <input ref='名' type='text' placeholder="你叫啥名"
+                value={顯示名} onChange={this.改顯示名.bind(this)}/>
             </div>
             <button className="ui button" onClick={this.掠稿.bind(this)}>載入進度</button>
           </div>
