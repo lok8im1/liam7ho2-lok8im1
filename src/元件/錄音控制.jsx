@@ -9,7 +9,6 @@ export default class 錄音控制 extends React.Component {
     super(props);
     this.state = {
         start: false,
-        stop: true,
         這馬時間: 0,
       };
   }
@@ -30,7 +29,6 @@ export default class 錄音控制 extends React.Component {
     this.Mediarecorder.ondataavailable = ((blob)=>(this.stopA(), 加音檔.bind(this)(blob)));
 
     this.Mediarecorder.start(timeInterval);
-    this.setState({ stop: false });
   }
 
   startA() {
@@ -48,7 +46,6 @@ export default class 錄音控制 extends React.Component {
   }
 
   stopA() {
-    this.setState({ stop: true });
     this.Mediarecorder.stop();
     this.Mediarecorder.stream.stop();
     clearInterval(this.計時);
@@ -72,7 +69,7 @@ export default class 錄音控制 extends React.Component {
             }
             {this.state.start?
             <button id="stop-recording" className="ui compact labeled icon button"
-              onClick={this.stopA.bind(this)}  disabled={this.state.stop}>
+              onClick={this.stopA.bind(this)}  disabled={!this.state.start}>
               <i className="stop icon"/> 停止
               <div className="floating ui red label">{這馬時間}</div>
             </button>
