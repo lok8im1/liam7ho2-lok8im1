@@ -60,16 +60,16 @@ export default class 錄音控制 extends React.Component {
             <div className="ui teal tag label">
               <i className="music icon"></i>雙聲道 {frequency}Hz WAV
             </div>
-            {!this.state.start?
+            {!this.state.start ?
             <button id="start-recording" className="ui compact blue labeled icon button"
                 onClick={this.startA.bind(this)} disabled={this.state.start}>
               <i className="play icon"/>開始
             </button>
             : null
             }
-            {this.state.start?
+            {this.state.start ?
             <button id="stop-recording" className="ui compact labeled icon button"
-              onClick={this.stopA.bind(this)}  disabled={!this.state.start}>
+              onClick={this.stopA.bind(this)} disabled={!this.state.start}>
               <i className="stop icon"/> 停止
               <div className="floating ui red label">{這馬時間}</div>
             </button>
