@@ -12,12 +12,8 @@ export default class 漢字臺羅 extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.資料 === this.props.資料) return;
-  }
-
   render() {
-    let { 編號 } = this.props.資料;
+    let { 編號 } = this.props;
     let { 分詞, 綜合標音 } = this.props.漢字音標對齊;
     let 分詞陣列 = [];
     let 漢字陣列 = [];

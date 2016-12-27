@@ -21,7 +21,7 @@ export default class 顯示例句 extends React.Component {
   }
 
   加音檔(blob) {
-    let { 資料, 音檔 } = this.state;
+    let { 音檔 } = this.state;
     this.setState({ 音檔: [...音檔, blob] });
   }
 
@@ -42,10 +42,10 @@ export default class 顯示例句 extends React.Component {
     let { 音檔 } = this.state;
     return (
     <div className='ui segment'>
-      <漢字臺羅 資料={資料} 漢字音標對齊={漢字音標對齊}/>
+      <漢字臺羅 編號={資料.編號} 漢字音標對齊={漢字音標對齊}/>
       <br/>
       <錄音控制 frequency={frequency} timeInterval={timeInterval} channels={channels}
-        資料={資料} 加音檔={this.加音檔.bind(this)}/>
+        加音檔={this.加音檔.bind(this)}/>
 
       <音檔表 音檔={音檔} 送出音檔={送出音檔.bind(this)} 當佇送={當佇送} />
     </div>
