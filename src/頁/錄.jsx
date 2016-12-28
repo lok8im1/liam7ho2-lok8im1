@@ -4,6 +4,7 @@ import superagent from 'superagent-bluebird-promise';
 import Debug from 'debug';
 import 後端 from '../App/後端';
 import 顯示例句 from '../元件/顯示例句';
+import 錄好上傳 from '../元件/錄好上傳';
 
 var debug = Debug('itaigi:錄');
 
@@ -20,6 +21,7 @@ export default class 錄 extends React.Component {
         音檔: [],
         當佇送: false,
         資料: undefined,
+        全部確定的資料: [],
       };
   }
 
@@ -37,7 +39,18 @@ export default class 錄 extends React.Component {
       .query({ 啥人唸的: 名 })
       .then(({ body })=>(
         this.setState({ 資料: body, 漢字音標對齊: undefined }),
-        this. 對齊(body)
+        this.對齊(body)
+      ))
+      .catch((err) => (debug(err)));
+  }
+
+  掠後一句稿() {
+    this.setState({資料:undefined, 漢字音標對齊: undefined }),
+    superagent.get(後端.稿())
+      .query({ 啥人唸的: 名 })
+      .then(({ body })=>(
+        this.setState({ 資料: body, 漢字音標對齊: undefined }),
+        this.對齊(body)
       ))
       .catch((err) => (debug(err)));
   }
@@ -53,29 +66,18 @@ export default class 錄 extends React.Component {
   }
 
   送出音檔(blob) {
-    this.setState({ 當佇送: true });
-    this.fileReader = new FileReader();
-    this.fileReader.onload = function () {
-        let encoded_blob = btoa(new Uint8Array(this.fileReader.result));
-        superagent.post(後端.稿())
-          .set('Content-Type', 'application/x-www-form-urlencoded')
-          .send({
-            啥人唸的: this.state.名,
-            編號: this.state.資料.編號,
-            blob: encoded_blob,
-          })
-          .then(({ body })=>(
-            this.setState({ 資料: body, 當佇送: false, 漢字音標對齊: undefined }),
-            this. 對齊(body)
-          ))
-          .catch((err) => (
-            debug(err),
-            alert('上傳失敗，麻煩檢查網路或回報錯誤～'),
-            this.setState({ 當佇送: false })
-          ));
-      }.bind(this);
+    let { 全部確定的資料 } = this.state;
+    let { 資料, 漢字音標對齊 } = this.state;
+    this.setState({ 全部確定的資料: [
+      {
+        確定的音檔: blob,
+        編號: 資料.編號,
+        漢字音標對齊: 漢字音標對齊,
+      },
+      ...全部確定的資料,
+      ], });
 
-    this.fileReader.readAsArrayBuffer(blob);
+    this.掠後一句稿();
   }
 
   改顯示名(evt) {
@@ -84,7 +86,7 @@ export default class 錄 extends React.Component {
   }
 
   render() {
-    let { frequency, timeInterval, channels, 顯示名, 音檔, 資料, 漢字音標對齊, 當佇送 } = this.state;
+    let { frequency, timeInterval, channels, 顯示名, 音檔, 資料, 漢字音標對齊, 當佇送, 全部確定的資料 } = this.state;
     if (frequency < 44100) {
       return (
         <div className='app container'>
@@ -93,6 +95,7 @@ export default class 錄 extends React.Component {
         );
     }
 
+    let a = 全部確定的資料.map((確定的資料, i)=>(<錄好上傳 key={i} 確定的資料={確定的資料}/>));
     return (
     <div className='app container'>
         <div className="ui form">
@@ -107,6 +110,7 @@ export default class 錄 extends React.Component {
         </div>
         <顯示例句 frequency={frequency} timeInterval={timeInterval} channels={channels}
           資料={資料} 漢字音標對齊={漢字音標對齊} 送出音檔={this.送出音檔.bind(this)} 當佇送={當佇送}/>
+        {a}
     </div>
     );
   }
