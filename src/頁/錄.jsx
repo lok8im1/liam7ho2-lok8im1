@@ -35,7 +35,7 @@ export default class 錄 extends React.Component {
     let 啥人唸的 = this.refs.名.value.trim();
     if (啥人唸的 == '')
       return;
-    this.setState({ 啥人唸的});
+    this.setState({ 啥人唸的 });
     cookie.save('hian2si7_mia5', 啥人唸的);
     superagent.get(後端.稿())
       .query({ 啥人唸的: 啥人唸的 })
@@ -68,6 +68,12 @@ export default class 錄 extends React.Component {
   }
 
   送出音檔(blob) {
+    let { 有確定的資料, 上傳好矣 } = this.state;
+    if (有確定的資料 && !上傳好矣) {
+      alert('頂一句猶未上傳成功，請先檢查網路狀態上傳頂一句。');
+      return;
+    }
+
     let { 啥人唸的, 資料, 漢字音標對齊 } = this.state;
     this.setState({
       全部確定的資料: {
@@ -77,7 +83,7 @@ export default class 錄 extends React.Component {
         漢字音標對齊: 漢字音標對齊,
       },
       有確定的資料: true,
-      上傳好矣:false,
+      上傳好矣: false,
     });
 
     this.掠後一句稿();
