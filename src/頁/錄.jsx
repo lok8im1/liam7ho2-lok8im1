@@ -47,9 +47,10 @@ export default class 錄 extends React.Component {
   }
 
   掠後一句稿() {
+    let { 編號 } = this.state.資料;
     this.setState({ 資料: undefined, 漢字音標對齊: undefined }),
     superagent.get(後端.稿())
-      .query({ 啥人唸的: this.state.啥人唸的 })
+      .query({ 啥人唸的: this.state.啥人唸的, 這馬第幾句: 編號 })
       .then(({ body })=>(
         this.setState({ 資料: body, 漢字音標對齊: undefined }),
         this.對齊(body)
