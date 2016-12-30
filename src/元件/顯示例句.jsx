@@ -47,7 +47,7 @@ export default class 顯示例句 extends React.Component {
       <錄音控制 frequency={frequency} timeInterval={timeInterval} channels={channels}
         加音檔={this.加音檔.bind(this)}/>
 
-      <音檔表 音檔={音檔} 送出音檔={送出音檔.bind(this)} 當佇送={false} />
+      <音檔表 音檔={音檔} 送出音檔={送出音檔.bind(this)} />
     </div>
     );
   }

@@ -30,12 +30,27 @@ export default class 錄好上傳 extends React.Component {
         );
     }
 
+    if (當佇送) {
+      return (
+        <div className='ui segment'>
+          <漢字臺羅 編號={編號} 漢字音標對齊={漢字音標對齊}/>
+          <br/>
+          <div className="ui segment">
+            <div className="ui active inverted dimmer">
+              <div className="ui text loader">上傳中…</div>
+            </div>
+            <p></p>
+          </div>
+        </div>
+        );
+    }
+
     return (
     <div className='ui segment'>
       <漢字臺羅 編號={編號} 漢字音標對齊={漢字音標對齊}/>
       <br/>
       上傳失敗，請閣傳一擺<br/>
-      <音檔表 音檔={[確定的音檔]} 送出音檔={錄好的上傳.bind(this)} 當佇送={當佇送} />
+      <音檔表 音檔={[確定的音檔]} 送出音檔={錄好的上傳.bind(this)} />
     </div>
     );
   }
