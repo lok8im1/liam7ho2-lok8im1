@@ -16,7 +16,7 @@ export default class 錄好上傳 extends React.Component {
 
     if (!有確定的資料) {
       return (
-        <div className='ui segment'>
+        <div>
         </div>
         );
     }
